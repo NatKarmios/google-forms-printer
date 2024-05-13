@@ -42,16 +42,14 @@ fn get_responses_url(form_id: &str, min_timestamp: &str) -> String {
 }
 
 async fn get_json(client: &reqwest::Client, url: &str) -> Result<JSON> {
-    // println!("GET {}", url);
     let response = client
         .get(url)
         .send()
         .await
-        .with_context(|| format!("Failed to GET {}", url).red())?;
+        .with_context(|| format!("Failed to GET {}\nIf this keeps happening, check your internet connection!", url).red())?;
     let json = response
         .json::<JSON>()
         .await
-        .with_context(|| format!("Failed to parse JSON from {}", url).red())?;
-    // println!("{}", serde_json::to_string_pretty(&json).unwrap());
+        .with_context(|| format!("Failed to parse JSON from {}\nSomething is very wrong!", url).red())?;
     Ok(json)
 }

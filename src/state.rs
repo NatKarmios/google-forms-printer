@@ -1,8 +1,9 @@
 use anyhow::{Context, Result};
+use printers::printer::Printer;
 use yup_oauth2 as oauth2;
 use colored::Colorize;
 
-use crate::{parse::*, Cfg, FormsClient, ParsedResponse};
+use crate::{choose_printer, parse::*, Cfg, FormsClient, ParsedResponse};
 use crate::util::*;
 
 type Auth = oauth2::authenticator::Authenticator<oauth2::hyper_rustls::HttpsConnector<oauth2::hyper::client::HttpConnector>>;
@@ -11,6 +12,7 @@ pub struct State {
   pub client: FormsClient,
   pub cfg: Cfg,
   pub last_handled: String,
+  pub printer: Printer,
 }
 
 impl State {
@@ -26,7 +28,8 @@ impl State {
         }
     };
     let last_handled = chrono::offset::Utc::now().to_rfc3339();
-    Ok(State { client, cfg, last_handled })
+    let printer = choose_printer();
+    Ok(State { client, cfg, last_handled, printer })
   }
 
   pub async fn get_responses(&self) -> Result<Vec<ParsedResponse>> {

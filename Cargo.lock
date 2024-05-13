@@ -893,6 +893,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "439ee305def115ba05938db6eb1644ff94165c5ab5e9420d1c1bcedbba909391"
 
 [[package]]
+name = "printers"
+version = "2.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "601970f11a0c22e37e10f0e7432c4926e714f04f020ad8f87d9784e051311d2d"
+dependencies = [
+ "libc",
+]
+
+[[package]]
 name = "proc-macro2"
 version = "1.0.82"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1576,6 +1585,7 @@ dependencies = [
  "chrono",
  "colored",
  "do-notation",
+ "printers",
  "reqwest",
  "serde",
  "serde_json",

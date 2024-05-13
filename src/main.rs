@@ -15,10 +15,16 @@ use print::*;
 use state::*;
 
 async fn do_poll(state: &mut State) -> Result<()> {
-    let responses = state.get_responses().await?;
+    let responses = match state.get_responses().await {
+        Ok(r) => r,
+        Err(e) => {
+            eprintln!("{}", e);
+            return Ok(());
+        }
+    };
     let mut last_handled = state.last_handled.to_owned();
     for response in responses {
-        print(&response).await;
+        print(&response, &state).await;
         if response.date.cmp(&last_handled) == Ordering::Greater {
             last_handled = response.date.clone();
         }

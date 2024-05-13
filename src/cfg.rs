@@ -4,8 +4,7 @@ use colored::Colorize;
 use do_notation::m;
 use serde::{Deserialize, Serialize};
 use std::{
-    fs::File,
-    io::{stdin, stdout, BufReader, Write},
+    fs::File, io::{stdin, BufReader}, path::Path
 };
 
 use crate::{util::*, FormsClient};
@@ -47,6 +46,9 @@ impl Cfg {
     }
 
     pub async fn from_file(client: &reqwest::Client) -> Result<Option<(Self, FormsClient)>> {
+        if !Path::exists(Path::new(CONFIG_FILE)) {
+            return Ok(None);
+        }
         let file = File::open(CONFIG_FILE)
             .with_context(|| format!("Couldn't open config file '{}'", CONFIG_FILE).red())?;
         let reader = BufReader::new(file);
@@ -65,26 +67,10 @@ impl Cfg {
     }
 }
 
-fn read_usize() -> Option<usize> {
-    let mut s = String::new();
-    stdin().read_line(&mut s).ok()?;
-    s.trim().parse::<usize>().ok()
-}
-
 fn choose_question(ids: &BiBTreeMap<String, String>) -> String {
     let keys: Vec<&String> = ids.left_values().collect();
-    for (i, key) in keys.iter().enumerate() {
-        println!("[{}] {}", i+1, key);
-    }
-    let mut i = 0;
-    while i < 1 || i > keys.len() {
-        print!("Enter a number ({}-{}): ", 1, keys.len());
-        stdout().flush().unwrap();
-        if let Some(n) = read_usize() {
-            i = n;
-        }
-    }
-    ids.get_by_left(keys[i-1]).unwrap().to_owned()
+    let key = choose(&keys);
+    ids.get_by_left(key).unwrap().to_owned()
 }
 
 fn get_question_map(form: &serde_json::Value) -> BiBTreeMap<String, String> {
