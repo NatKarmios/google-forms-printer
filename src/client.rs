@@ -1,5 +1,5 @@
 use anyhow::{Context, Result};
-use colored::Colorize;
+use colorize::AnsiColor;
 use serde_json::Value as JSON;
 
 pub struct FormsClient {

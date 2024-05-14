@@ -1,5 +1,5 @@
 use anyhow::{Context, Result};
-use colored::Colorize;
+use colorize::AnsiColor;
 use tryvial::try_block;
 
 use crate::State;

@@ -1,7 +1,7 @@
 use anyhow::{Context, Result};
 use printers::printer::Printer;
 use yup_oauth2 as oauth2;
-use colored::Colorize;
+use colorize::AnsiColor;
 
 use crate::{choose_printer, parse::*, Cfg, FormsClient, ParsedResponse};
 use crate::util::*;

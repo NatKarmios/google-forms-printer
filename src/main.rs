@@ -22,6 +22,12 @@ async fn do_poll(state: &mut State) -> Result<()> {
             return Ok(());
         }
     };
+
+    let len = responses.len();
+    if len > 0 {
+        println!("Got {} new response{}.", len, (if len == 1 { "" } else { "s" }));
+    }
+
     let mut last_handled = state.last_handled.to_owned();
     for response in responses {
         print(&response, &state).await;
@@ -44,6 +50,7 @@ async fn run() -> Result<()> {
 
 #[tokio::main]
 async fn main() {
+    let _ = enable_ansi_support::enable_ansi_support();
     match run().await {
         Ok(_) => (),
         Err(e) => eprintln!("{:?}", e),

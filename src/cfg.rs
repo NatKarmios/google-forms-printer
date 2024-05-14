@@ -1,6 +1,6 @@
 use anyhow::{Context, Result};
 use bimap::BiBTreeMap;
-use colored::Colorize;
+use colorize::AnsiColor;
 use do_notation::m;
 use serde::{Deserialize, Serialize};
 use std::{
