@@ -1,5 +1,4 @@
 use anyhow::{Context, Result};
-use printers::printer::Printer;
 use yup_oauth2 as oauth2;
 use colorize::AnsiColor;
 
@@ -12,7 +11,7 @@ pub struct State {
   pub client: FormsClient,
   pub cfg: Cfg,
   pub last_handled: String,
-  pub printer: Printer,
+  pub printer: String,
 }
 
 impl State {
